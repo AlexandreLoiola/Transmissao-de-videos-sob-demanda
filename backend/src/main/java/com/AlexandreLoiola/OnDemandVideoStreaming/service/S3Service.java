@@ -40,8 +40,8 @@ public class S3Service {
         }
     }
 
-    public List<S3ObjectSummary> listFiles() {
-        ObjectListing objectListing = s3client.listObjects(bucketName);
+    public List<S3ObjectSummary> listobjects(String folderName) {
+        ObjectListing objectListing = s3client.listObjects(bucketName, folderName);
         return objectListing.getObjectSummaries();
     }
 

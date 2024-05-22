@@ -24,9 +24,9 @@ public class S3Controller {
         this.s3Service = s3Service;
     }
 
-    @GetMapping(path = "/list")
-    public ResponseEntity<List<S3ObjectSummary>> listFiles() {
-        List<S3ObjectSummary> files = s3Service.listFiles();
+    @GetMapping(path = {"/listobjects", "/listobjects/{folderName}"})
+    public ResponseEntity<List<S3ObjectSummary>> listFiles(@PathVariable(required = false) String folderName) {
+        List<S3ObjectSummary> files = s3Service.listobjects(folderName);
         return ResponseEntity.ok(files);
     }
 
