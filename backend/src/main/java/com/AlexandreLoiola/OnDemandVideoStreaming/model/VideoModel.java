@@ -14,14 +14,14 @@ public class VideoModel {
     @GeneratedValue
     private UUID id;
 
+    @Column(name = "folder", length = 100, nullable = false)
+    private String folder;
+
     @Column(name = "title", length = 100, nullable = false, unique = true)
     private String title;
 
     @Column(name = "description", length = 500, nullable = false, unique = true)
     private String description;
-
-    @Column(name = "url", length = 500, nullable = false, unique = true)
-    private String url;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "uploaded_at", nullable = false)
