@@ -2,6 +2,7 @@ package com.AlexandreLoiola.OnDemandVideoStreaming.rest.exceptionHandler;
 
 import com.AlexandreLoiola.OnDemandVideoStreaming.service.exceptions.AmazonS3ServiceException;
 import com.AlexandreLoiola.OnDemandVideoStreaming.service.exceptions.FileUploadException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,18 @@ public class ControllerExceptionHandler {
                 errorMsg,
                 request.getRequestURI());
         return new ResponseEntity<>(exceptionsDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionDto> handleHttpMessageNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
+        String errorMsg = ex.getMessage();
+        ExceptionDto exceptionsDto = new ExceptionDto(
+                System.currentTimeMillis(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                errorMsg,
+                request.getRequestURI());
+        return new ResponseEntity<>(exceptionsDto, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AmazonS3ServiceException.class)
