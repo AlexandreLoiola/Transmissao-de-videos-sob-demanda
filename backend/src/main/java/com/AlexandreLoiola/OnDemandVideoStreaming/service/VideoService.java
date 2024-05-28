@@ -11,18 +11,25 @@ import com.AlexandreLoiola.OnDemandVideoStreaming.service.exceptions.video.Video
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoService {
     private final VideoRepository videoRepository;
     private final VideoMapper videoMapper;
 
-    public VideoService(VideoRepository videoRepository, VideoMapper videoMapper) {
+    private final S3Service s3Service;
+
+    public VideoService(VideoRepository videoRepository, VideoMapper videoMapper, S3Service s3Service) {
         this.videoRepository = videoRepository;
         this.videoMapper = videoMapper;
+        this.s3Service = s3Service;
     }
 
     public VideoModel findVideoModelByTitle(String title) {
@@ -39,23 +46,43 @@ public class VideoService {
         } catch (VideoNotFoundException e) {
             return false;
         }
-        }
+    }
 
     public Set<VideoDto> getAllVideoDto() {
         Set<VideoModel> videoModels = videoRepository.findByIsActiveTrue();
         if (videoModels.isEmpty()) {
             throw new VideoNotFoundException("No active video was found");
         }
-        return videoMapper.setModelToSetDto(videoModels);
+        return videoModels.stream()
+                .map(this::modelToDtoWithUrls)
+                .collect(Collectors.toSet());
     }
 
     public VideoDto getVideoDtoByTitle(String title) {
         VideoModel videoModel = findVideoModelByTitle(title);
-        return videoMapper.modelToDto(videoModel);
+        return modelToDtoWithUrls(videoModel);
+    }
+
+    public VideoDto modelToDtoWithUrls(VideoModel videoModel) {
+        VideoDto videoDto = videoMapper.modelToDto(videoModel);
+        String videoKey = "videos/" + videoModel.getFolder() + "/" + videoModel.getTitle();
+        String thumbnailKey = "thumbs/" + videoModel.getFolder() + "/" + videoModel.getTitle();
+        URL videoUrl = s3Service.generateTempUrl(videoKey, 30);
+        URL thumbnailUrl = s3Service.generateTempUrl(thumbnailKey, 30);
+        videoDto.setVideoUrl(videoUrl);
+        videoDto.setThumbnailUrl(thumbnailUrl);
+        return videoDto;
+    }
+
+    public void uploadVideoAndThumb(String id, String Title, String folder, MultipartFile video, MultipartFile thumb) throws IOException {
+        String videoFolder = "videos/" + folder;
+        String thumbFolder = "thumbs/" +  folder;
+        s3Service.uploadFile(id, Title, videoFolder, video);
+        s3Service.uploadFile(id, Title, thumbFolder, thumb);
     }
 
     @Transactional
-    public VideoDto insertVideo(VideoForm videoForm) {
+    public VideoDto insertVideo(MultipartFile video, MultipartFile thumb, VideoForm videoForm) throws IOException  {
         if (isVideoTitleExists(videoForm.getTitle())) {
             throw new VideoInsertException(String.format("The video ‘%s’ is already registered", videoForm.getTitle()));
         }
@@ -67,20 +94,21 @@ public class VideoService {
             videoModel.setUpdatedAt(date);
             videoModel.setActive(true);
             videoModel.setVersion(1);
-            videoRepository.save(videoModel);
+            videoModel = videoRepository.save(videoModel);
+            uploadVideoAndThumb((videoModel.getId()).toString(), videoModel.getTitle(), videoModel.getFolder(), video, thumb);
             return videoMapper.modelToDto(videoModel);
         } catch (DataIntegrityViolationException err) {
-            throw new VideoNotFoundException(String.format("Failed to register the video ‘%s’. Check if the data is correct", videoForm.getTitle()));
+            throw new VideoNotFoundException(
+                    String.format("Failed to register the video ‘%s’. Check if the data is correct", videoForm.getTitle()));
         }
     }
 
     @Transactional
-    public VideoDto updateVideo(String title ,VideoForm videoForm) {
+    public VideoDto updateVideo(String title, VideoForm videoForm) {
         VideoModel videoModel = findVideoModelByTitle(title);
         try {
             videoModel.setTitle(videoForm.getTitle());
             videoModel.setDescription(videoForm.getDescription());
-            videoModel.setUrl(videoForm.getUrl());
             videoRepository.save(videoModel);
             return videoMapper.modelToDto(videoModel);
         } catch (DataIntegrityViolationException err) {
