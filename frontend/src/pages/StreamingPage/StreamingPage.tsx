@@ -3,6 +3,7 @@ import { IVideo } from "../../interfaces/IVideo";
 import VideoPlayer from "../../Components/videoPlayer/VideoPlayer";
 import Playlist from "../../Components/playlist/Playlist";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const StreamingPage = () => {
   const [videos, setVideos] = useState([]);
@@ -11,6 +12,9 @@ const StreamingPage = () => {
     title: "",
     description: "",
   });
+  
+  const location = useLocation();
+  const { title } = location.state;
 
   const handleVideos = async (): Promise<void> => {
     try {
@@ -24,7 +28,7 @@ const StreamingPage = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Credenciais Inválidas!");
+      alert("Um erro ocorreu");
     }
   };
 

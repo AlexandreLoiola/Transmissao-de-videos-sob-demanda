@@ -7,7 +7,7 @@ export const StyledContainer = styled.div`
   width: 25vw;
   position: fixed;
   right: 0;
-  background-color: #929292;
+  background-color: #F9F9F9;
   box-shadow: 0px 0px 20px 0px #0000001A;
   flex-direction: column;
   gap: 10px;

@@ -37,8 +37,8 @@ export const StyledTitle = styled.h1`
 
 export const StyledDescription = styled.span`
   font-family: Roboto;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 500;
   line-height: 24px;
   text-align: left;
   color: #000000CC;
