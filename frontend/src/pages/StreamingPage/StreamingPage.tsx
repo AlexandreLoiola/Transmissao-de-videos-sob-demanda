@@ -3,7 +3,8 @@ import { IVideo } from "../../interfaces/IVideo";
 import VideoPlayer from "../../Components/videoPlayer/VideoPlayer";
 import Playlist from "../../Components/playlist/Playlist";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Header from "../../Components/Header/Header";
 
 const StreamingPage = () => {
   const [videos, setVideos] = useState([]);
@@ -12,7 +13,7 @@ const StreamingPage = () => {
     title: "",
     description: "",
   });
-  
+
   const location = useLocation();
   const { title } = location.state;
 
@@ -39,20 +40,29 @@ const StreamingPage = () => {
   const handleVideoSelect = (video: IVideo) => {
     setCurrentVideo(video);
   };
+  
+  const navigate = useNavigate();
+
+  const handlePreviousPage = () => {
+    navigate("/", { state: { title } });
+  };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <VideoPlayer
-        videoUrl={currentVideo.videoUrl}
-        title={currentVideo.title}
-        description={currentVideo.description}
-      />
-      <Playlist
-        videos={videos}
-        onVideoSelect={handleVideoSelect}
-        currentVideo={currentVideo}
-      />
-    </div>
+    <>
+      <Header title={"Transmissão de Vídeo Sob Demanda"} showBackIcon onBackClick={handlePreviousPage} />
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <VideoPlayer
+          videoUrl={currentVideo.videoUrl}
+          title={currentVideo.title}
+          description={currentVideo.description}
+        />
+        <Playlist
+          videos={videos}
+          onVideoSelect={handleVideoSelect}
+          currentVideo={currentVideo}
+        />
+      </div>
+    </>
   );
 };
 export default StreamingPage;
