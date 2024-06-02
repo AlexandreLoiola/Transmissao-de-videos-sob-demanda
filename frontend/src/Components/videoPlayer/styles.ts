@@ -10,19 +10,20 @@ export const VideoContainer = styled.div`
 `;
 
 export const StyledVideo = styled(ReactPlayer)`
-  width: 56vw !important;
-  height: 34vw !important;
+  width: 49vw !important;
+  height: 28vw !important;
   border-radius: 20px !important;
   overflow: hidden !important;
+  margin-top: 20px;
 `;
 
 export const TitleDescriptionContainer = styled.div`
-  background-color: #F9F9F9;
-  box-shadow: 0px 0px 20px 0px #0000001A;
+  background-color: #fff0f5;
+  box-shadow: 0px 0px 20px 0px #0000001A; 
   border-radius: 12px;
   padding: 20px;
   margin-top: 20px;
-  width: 56vw;
+  width: 49vw;
 `;
 
 

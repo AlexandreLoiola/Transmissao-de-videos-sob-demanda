@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../Components/Header/Header";
 
 const StreamingPage = () => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<IVideo[]>([]);
   const [currentVideo, setCurrentVideo] = useState({
     videoUrl: "",
     title: "",
@@ -49,7 +49,7 @@ const StreamingPage = () => {
 
   return (
     <>
-      <Header title={"Transmissão de Vídeo Sob Demanda"} showBackIcon onBackClick={handlePreviousPage} />
+      <Header title={"Playlist: " + title} showBackIcon onBackClick={handlePreviousPage} />
       <div style={{ display: "flex", flexDirection: "row" }}>
         <VideoPlayer
           videoUrl={currentVideo.videoUrl}
@@ -65,4 +65,5 @@ const StreamingPage = () => {
     </>
   );
 };
+
 export default StreamingPage;

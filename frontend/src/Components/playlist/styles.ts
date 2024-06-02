@@ -7,12 +7,13 @@ export const StyledContainer = styled.div`
   width: 25vw;
   position: fixed;
   right: 0;
-  background-color: #F9F9F9;
-  box-shadow: 0px 0px 20px 0px #0000001A;
+  background-color: #fff0f5;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   overflow-y: auto;
+  box-shadow: 0px 0px 20px 0px #0000001A; 
+  z-index: 1;
 `;
 
 export const StyledItem = styled.div`
