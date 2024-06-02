@@ -1,9 +1,15 @@
+
+import Footer from "../../Components/Footer/Footer";
+import Header from "../../Components/Header/Header";
 import PlaylistCover from "../../Components/PlaylistCover/PlaylistCover";
+import SearchForm from "../../Components/SearchForm/SearchForm";
 import { PlaylistCoverContainer } from "./styles";
 
 const PlaylistsOverviewPage = () => {
   return (
     <>
+      <Header title={"Transmissão de Vídeo Sob Demanda"} />
+      <SearchForm />
       <PlaylistCoverContainer>
         <PlaylistCover
           coverUrl={"src/assets/WhatsApp Image 2024-05-28 at 11.27.37.jpeg"}
@@ -18,6 +24,7 @@ const PlaylistsOverviewPage = () => {
           title={"Musicas"}
         ></PlaylistCover>
       </PlaylistCoverContainer>
+      <Footer />
     </>
   );
 };
