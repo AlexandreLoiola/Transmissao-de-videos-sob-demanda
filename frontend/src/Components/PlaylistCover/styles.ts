@@ -3,8 +3,10 @@ import { TbPlayerPlay } from "react-icons/tb";
 
 export const CoverContainer = styled.div`
   position: relative;
-  width: 340px;
-  height: 200px;
+  width: ${(props) =>
+      props.theme.deviceType === "mobile" ? "300px" : "340px"};
+  height: ${(props) =>
+      props.theme.deviceType === "mobile" ? "180px" : "200px"};
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
 
@@ -49,7 +51,8 @@ export const StyledTitle = styled.h1`
   display: flex;
   justify-content: center;
   font-family: Roboto;
-  font-size: 24px;
+  font-size: ${(props) =>
+      props.theme.deviceType === "mobile" ? "22px" : "24px "};
   font-weight: 600;
   text-align: left;
   color: black;

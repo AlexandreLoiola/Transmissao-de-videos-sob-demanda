@@ -4,16 +4,21 @@ export const StyledContainer = styled.div`
   display: flex;
   height: 100vh;
   padding-top: 10px;
-  width: 25vw;
-  position: fixed;
-  right: 0;
+  padding-bottom: ${(props) =>
+      props.theme.deviceType === "mobile" ? "4vw" : "10vh"};
+  width: ${(props) =>
+      props.theme.deviceType === "mobile" ? "100vw" : "25vw"};
+  position: ${(props) =>
+      props.theme.deviceType === "mobile" ? "block" : "fixed"};
+  right: ${(props) =>
+      props.theme.deviceType === "mobile" ? "100" : "0"};
   background-color: #fff0f5;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   overflow-y: auto;
   box-shadow: 0px 0px 20px 0px #0000001A; 
-  z-index: 1;
+  z-index: 1; 
 `;
 
 export const StyledItem = styled.div`
@@ -38,8 +43,9 @@ export const StyledImage = styled.img`
 export const StyledTitle = styled.span`
   margin-top: 4px;
   margin-bottom: 20px;
-  font-family: Roboto;
-  font-size: 18px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: ${(props) =>
+      props.theme.deviceType === "mobile" ? "16px" : "18px "};
   font-weight: 600;
   line-height: 24px;
   text-align: center;

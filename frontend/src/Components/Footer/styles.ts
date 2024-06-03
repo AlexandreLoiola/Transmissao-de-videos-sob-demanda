@@ -13,8 +13,9 @@ export const FooterContainer = styled.div`
 
 export const Title = styled.h1`
   margin: 0;
-  font-family: Roboto;
-  font-size: 22px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: ${(props) =>
+      props.theme.deviceType === "mobile" ? "16px" : "22px "};
   font-weight: 600;
   flex-grow: 1;
   text-align: center;

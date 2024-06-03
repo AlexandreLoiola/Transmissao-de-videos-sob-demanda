@@ -5,13 +5,15 @@ import { Button, FormControl } from "react-bootstrap";
 export const SearchFormContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: ${(props) =>
+      props.theme.deviceType === "mobile" ? "0" : "40px"};
 `;
 
 export const StyledForm = styled.form`
   display: flex;
   width: 100%;
-  padding: 0 30vw;
+  padding: ${(props) =>
+      props.theme.deviceType === "mobile" ? "30px 40px" : "0 30vw"};
   margin-bottom: 0rem !important;
   input {
     margin-left: 5px;

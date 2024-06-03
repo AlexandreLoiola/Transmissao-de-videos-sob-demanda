@@ -5,6 +5,8 @@ import Playlist from "../../Components/playlist/Playlist";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../Components/Header/Header";
+import { StyledContainer } from "./styles";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const StreamingPage = () => {
   const [videos, setVideos] = useState<IVideo[]>([]);
@@ -20,7 +22,7 @@ const StreamingPage = () => {
   const handleVideos = async (): Promise<void> => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/v1/api/streaming-service/video"
+        `${apiUrl}/video`
       );
       console.log(response.data);
       setVideos(response.data);
@@ -50,7 +52,7 @@ const StreamingPage = () => {
   return (
     <>
       <Header title={"Playlist: " + title} showBackIcon onBackClick={handlePreviousPage} />
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <StyledContainer>
         <VideoPlayer
           videoUrl={currentVideo.videoUrl}
           title={currentVideo.title}
@@ -61,7 +63,7 @@ const StreamingPage = () => {
           onVideoSelect={handleVideoSelect}
           currentVideo={currentVideo}
         />
-      </div>
+      </StyledContainer>
     </>
   );
 };
