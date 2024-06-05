@@ -10,9 +10,9 @@ const PlaylistsOverviewPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const playlists = [
-    { coverUrl: "src/assets/WhatsApp Image 2024-05-28 at 11.27.37.jpeg", title: "Paisagem" },
-    { coverUrl: "src/assets/WhatsApp Image 2024-05-28 at 11.26.56.jpeg", title: "Músicas" },
-    { coverUrl: "src/assets/Captura de tela 2024-05-25 092345.png", title: "Esportes" },
+    { coverUrl: "src/assets/capa_playlist_paisagem.png", title: "Paisagens" },
+    { coverUrl: "src/assets/capa_playlist_musica.jpeg", title: "Músicas" },
+    { coverUrl: "src/assets/capa_playlist_esporte.png", title: "Esportes" },
   ];
 
   const filteredPlaylists = playlists.filter(playlist =>
