@@ -17,13 +17,19 @@ const StreamingPage = () => {
   });
 
   const location = useLocation();
-  const { title } = location.state;
+  let { title } = location.state;
+
+  function normalizeString(str: string) {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
 
   const handleVideos = async (): Promise<void> => {
+    title = normalizeString(title);
     try {
-      const response = await axios.get(
-        `${apiUrl}/video`
-      );
+      const response = await axios.get(`${apiUrl}/video/list/${title}`);
       console.log(response.data);
       setVideos(response.data);
       if (response.data.length > 0) {
@@ -42,7 +48,7 @@ const StreamingPage = () => {
   const handleVideoSelect = (video: IVideo) => {
     setCurrentVideo(video);
   };
-  
+
   const navigate = useNavigate();
 
   const handlePreviousPage = () => {
@@ -51,7 +57,11 @@ const StreamingPage = () => {
 
   return (
     <>
-      <Header title={"Playlist: " + title} showBackIcon onBackClick={handlePreviousPage} />
+      <Header
+        title={"Playlist: " + title}
+        showBackIcon
+        onBackClick={handlePreviousPage}
+      />
       <StyledContainer>
         <VideoPlayer
           videoUrl={currentVideo.videoUrl}
