@@ -24,9 +24,10 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @GetMapping
-    public ResponseEntity<Set<VideoDto>> getAllVideoDto() {
-        Set<VideoDto> videoDtos = videoService.getAllVideoDto();
+    @GetMapping("/list")
+    public ResponseEntity<Set<VideoDto>> getAllVideoDto(@RequestParam String playlist) {
+        System.out.println("///////////////////////////////////" + playlist);
+        Set<VideoDto> videoDtos = videoService.getAllVideoDtoFromPlaylist(playlist);
         return ResponseEntity.ok().body(videoDtos);
     }
 

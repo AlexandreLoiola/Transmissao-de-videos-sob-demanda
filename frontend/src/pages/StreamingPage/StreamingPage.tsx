@@ -29,9 +29,9 @@ const StreamingPage = () => {
   const handleVideos = async (): Promise<void> => {
     title = normalizeString(title);
     try {
-      const response = await axios.get(`${apiUrl}/video/list/${title}`);
+      const response = await axios.get(`${apiUrl}/video/list?playlist=${title}`);
       console.log(response.data);
-      setVideos(response.data);
+      setVideos(response.data); 
       if (response.data.length > 0) {
         setCurrentVideo(response.data[0]);
       }

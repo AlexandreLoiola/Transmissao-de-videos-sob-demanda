@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface VideoRepository extends JpaRepository<VideoModel, UUID> {
     Optional<VideoModel> findByTitleAndIsActiveTrue(String title);
     Set<VideoModel> findByIsActiveTrue();
+    Set<VideoModel> findByFolderAndIsActiveTrue(String folder);
 }

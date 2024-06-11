@@ -48,8 +48,8 @@ public class VideoService {
         }
     }
 
-    public Set<VideoDto> getAllVideoDto() {
-        Set<VideoModel> videoModels = videoRepository.findByIsActiveTrue();
+    public Set<VideoDto> getAllVideoDtoFromPlaylist(String playlist) {
+        Set<VideoModel> videoModels = videoRepository.findByFolderAndIsActiveTrue(playlist);
         if (videoModels.isEmpty()) {
             throw new VideoNotFoundException("No active video was found");
         }
@@ -65,8 +65,8 @@ public class VideoService {
 
     public VideoDto modelToDtoWithUrls(VideoModel videoModel) {
         VideoDto videoDto = videoMapper.modelToDto(videoModel);
-        String videoKey = "videos/" + videoModel.getFolder() + "/" + videoModel.getTitle();
-        String thumbnailKey = "thumbs/" + videoModel.getFolder() + "/" + videoModel.getTitle();
+        String videoKey = "videos/xandin/" + videoModel.getFolder() + "/" + videoModel.getTitle();
+        String thumbnailKey = "thumbs/xandin/" + videoModel.getFolder() + "/" + videoModel.getTitle();
         URL videoUrl = s3Service.generateTempUrl(videoKey, 30);
         URL thumbnailUrl = s3Service.generateTempUrl(thumbnailKey, 30);
         videoDto.setVideoUrl(videoUrl);
@@ -75,8 +75,8 @@ public class VideoService {
     }
 
     public void uploadVideoAndThumb(String id, String Title, String folder, MultipartFile video, MultipartFile thumb) throws IOException {
-        String videoFolder = "videos/" + folder;
-        String thumbFolder = "thumbs/" +  folder;
+        String videoFolder = "videos/xandin/" + folder;
+        String thumbFolder = "thumbs/xandin/" +  folder;
         s3Service.uploadFile(id, Title, videoFolder, video);
         s3Service.uploadFile(id, Title, thumbFolder, thumb);
     }
