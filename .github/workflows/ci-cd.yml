@@ -33,15 +33,27 @@ jobs:
 
       - name: Save Docker images
         run: |
-          docker save transmissao-de-videos-sob-demanda_backend -o backend-app.tar
-          docker save transmissao-de-videos-sob-demanda_frontend -o frontend-app.tar
+          docker save transmissao-de-videos-sob-demanda-backend -o backend-app.tar
+          docker save transmissao-de-videos-sob-demanda-frontend -o frontend-app.tar
+          
+          echo "Pulling PostgreSQL image..."
+          docker pull postgres:latest || { echo "Failed to pull PostgreSQL image"; exit 1; }
+
+          echo "Saving PostgreSQL image..."
+          docker save postgres:latest -o postgres-videostream.tar || { echo "Failed to save PostgreSQL image"; exit 1; }
+
+      - name: Test SSH Connection
+        run: |
+          ssh -v -o StrictHostKeyChecking=no ubuntu@${{ secrets.LIGHTSAIL_IP }} 'echo "SSH Connection Successful"'
+
 
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSAIL_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.LIGHTSAIL_IP }} >> ~/.ssh/known_hosts
+          echo "Configuring known hosts..."
+          ssh-keyscan -H ${{ secrets.LIGHTSAIL_IP }} >> ~/.ssh/known_hosts || { echo "Failed to add to known_hosts"; exit 1; }
 
       - name: Create deploy directory
         run: |
