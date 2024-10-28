@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: postgres-videostream
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: VideoStream
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-compose-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: on-demand-video-streaming-app
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/VideoStream
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - postgres-compose-network
+
+  frontend:
+    container_name: frontend-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
+
+volumes:
+  pgdata:
