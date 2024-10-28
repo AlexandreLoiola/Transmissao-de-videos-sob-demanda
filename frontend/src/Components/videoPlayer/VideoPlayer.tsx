@@ -11,16 +11,18 @@ interface VideoPlayerProps {
   videoUrl: string;
   title: string;
   description: string;
+  autoplay?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
   videoUrl,
   title,
   description,
+  autoplay = true
 }) => {
   return (
     <VideoContainer>
-      <StyledVideo url={videoUrl} controls={true} />
+      <StyledVideo url={videoUrl} playing={autoplay} controls={true} />
       <TitleDescriptionContainer>
         <StyledTitle> {title}</StyledTitle>
         <StyledDescription>{description}</StyledDescription>

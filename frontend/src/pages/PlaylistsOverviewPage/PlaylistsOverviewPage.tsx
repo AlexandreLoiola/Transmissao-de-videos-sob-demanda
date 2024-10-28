@@ -6,13 +6,17 @@ import PlaylistCover from "../../Components/PlaylistCover/PlaylistCover";
 import SearchForm from "../../Components/SearchForm/SearchForm";
 import { PlaylistCoverContainer } from "./styles";
 
+import paisagemCover from '../../../public/capa_playlist_paisagem.png';
+import musicaCover from '../../../public/capa_playlist_musica.jpeg';
+import esporteCover from '../../../public/capa_playlist_esporte.png';
+
 const PlaylistsOverviewPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const playlists = [
-    { coverUrl: "src/assets/capa_playlist_paisagem.png", title: "Paisagens" },
-    { coverUrl: "src/assets/capa_playlist_musica.jpeg", title: "Músicas" },
-    { coverUrl: "src/assets/capa_playlist_esporte.png", title: "Esportes" },
+    { coverUrl: paisagemCover, title: "Paisagens" },
+    { coverUrl: musicaCover, title: "Músicas" },
+    { coverUrl: esporteCover, title: "Esportes" },
   ];
 
   const filteredPlaylists = playlists.filter(playlist =>

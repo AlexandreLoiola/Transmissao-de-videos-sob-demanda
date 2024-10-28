@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MdSearch, MdFilterListAlt } from "react-icons/md";
-import { Button, FormControl } from "react-bootstrap";
+import { Button, ButtonProps, FormControl } from "react-bootstrap";
 
 export const SearchFormContainer = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ export const StyledForm = styled.form`
   }
 `;
 
-export const SearchButton = styled(Button)`
+export const SearchButton = styled(Button as React.FC<ButtonProps>)`
   border-radius: 6px 0 0 6px;
   margin-right: -6px;
 `;

@@ -11,9 +11,11 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const StreamingPage = () => {
   const [videos, setVideos] = useState<IVideo[]>([]);
   const [currentVideo, setCurrentVideo] = useState({
-    videoUrl: "",
     title: "",
     description: "",
+    folder: "",
+    videoUrl: "",
+    thumbnailUrl: "",
   });
 
   const location = useLocation();
@@ -31,9 +33,11 @@ const StreamingPage = () => {
     try {
       const response = await axios.get(`${apiUrl}/video/list?playlist=${title}`);
       console.log(response.data);
-      setVideos(response.data); 
+      setVideos(response.data);
       if (response.data.length > 0) {
         setCurrentVideo(response.data[0]);
+      } else {
+        console.error("A resposta não é um array:", response.data);
       }
     } catch (error) {
       console.error(error);
@@ -67,6 +71,7 @@ const StreamingPage = () => {
           videoUrl={currentVideo.videoUrl}
           title={currentVideo.title}
           description={currentVideo.description}
+          autoplay
         />
         <Playlist
           videos={videos}

@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, ButtonProps } from "react-bootstrap";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -23,4 +23,4 @@ export const StyledSubTitle = styled.h2`
   margin-bottom: 5vh;
 `;
 
-export const StyledButton = styled(Button)``;
+export const StyledButton = styled(Button as React.FC<ButtonProps>)``;

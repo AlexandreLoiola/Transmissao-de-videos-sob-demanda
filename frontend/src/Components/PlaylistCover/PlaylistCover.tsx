@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   CoverContainer,
   CoverImage,
@@ -10,17 +9,12 @@ import {
 interface PlaylistCoverProps {
   coverUrl: string;
   title: string;
+  onClick?: () => void;
 }
 
-const PlaylistCover: React.FC<PlaylistCoverProps> = ({ coverUrl, title }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/streaming", { state: { title } });
-  };
-
+const PlaylistCover: React.FC<PlaylistCoverProps> = ({ coverUrl, title, onClick }) => {
   return (
-    <CoverContainer onClick={handleClick}>
+    <CoverContainer onClick={onClick}>
       <CoverImage src={coverUrl} alt="Playlist cover" />
       <Overlay>
         <PlayIcon />
